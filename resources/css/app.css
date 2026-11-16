@@ -1,0 +1,366 @@
+@import 'tailwindcss';
+
+/*
+ | Class-based dark mode. Tailwind 4 defaults `dark:` to the OS setting;
+ | Vermex lets the user choose explicitly, so tie it to the `.dark` class
+ | placed on <html> by the pre-paint theme script.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ |--------------------------------------------------------------------------
+ | Source scanning
+ |--------------------------------------------------------------------------
+ | Tailwind 4 scans templates for utility usage. Point it at the Blade
+ | views and the (small) JS layer so nothing is missed.
+ */
+@source '../views/**/*.blade.php';
+@source '../js/**/*.js';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+/*
+ |--------------------------------------------------------------------------
+ | Vermex design tokens — see DESIGN.md
+ |--------------------------------------------------------------------------
+ | Minimalismo Funcional B2B + Vermex crimson identity.
+ | Components reference tokens only; no page-level colour literals.
+ */
+@theme {
+    /* ---- Typography ---- */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* ---- Vermex brand (retained crimson identity) ---- */
+    --color-brand-50: #fdf2f2;
+    --color-brand-100: #fee2e2;
+    --color-brand-500: #e53935;
+    --color-brand-600: #d32f2f;
+    --color-brand-700: #b71c1c;
+
+    /* ---- Semantic palette ---- */
+    --color-surface: #ffffff;
+    --color-surface-muted: #f8f8f8;
+    --color-border: #e5e7eb;
+    --color-border-subtle: #fecaca;
+    --color-ink: #212529;
+    --color-ink-muted: #6c757d;
+    --color-success: #28a745;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+
+    /* ---- Semantic state surfaces (light defaults) ---- */
+    --color-brand-soft: #fdf2f2;
+    --color-brand-soft-border: #fee2e2;
+    --color-brand-ink: #b71c1c;
+    --color-success-soft: #f0fdf4;
+    --color-success-soft-border: #dcfce7;
+    --color-success-ink: #166534;
+    --color-success-strong: #15803d;
+    --color-danger-soft: #fef2f2;
+    --color-danger-soft-border: #fee2e2;
+    --color-danger-ink: #991b1b;
+    --color-danger-strong: #b91c1c;
+    --color-warning-soft: #fefce8;
+    --color-warning-soft-border: #fef9c3;
+    --color-warning-ink: #854d0e;
+    --color-warning-strong: #a16207;
+    --color-info-soft: #eff6ff;
+    --color-info-soft-border: #dbeafe;
+    --color-info-ink: #1e40af;
+    --color-info-strong: #1d4ed8;
+
+    /* ---- Text/link accent (separate from solid brand fills) ---- */
+    --color-link: #d32f2f;
+    --color-link-hover: #b71c1c;
+    --color-scrollbar: #cbd5e1;
+
+    /* ---- Sidebar (Vermex dark identity) ---- */
+    --color-sidebar: #2b110d;
+    --color-sidebar-hover: #3d1712;
+    --color-sidebar-active: #431913;
+    --color-sidebar-line: #4d1f18;
+    --color-sidebar-text: #c5b8b5;
+    --color-sidebar-accent: #ff6b5a;
+    --color-sidebar-brand: #c8887b;
+
+    /* ---- Semantic aliases ---- */
+    --color-primary: #d32f2f;
+    --color-primary-hover: #e53935;
+
+    /* ---- Border radius ---- */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* ---- Shadows (capped per DESIGN.md) ---- */
+    --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/*
+ |--------------------------------------------------------------------------
+ | Dark theme overrides
+ |--------------------------------------------------------------------------
+ | Every utility in the app resolves through these semantic tokens, so this
+ | block re-themes the whole shell without page-level `dark:` variants.
+ | Brand-600/700 stay untouched because they back solid primary buttons,
+ | where white text needs a dark crimson surface.
+ */
+.dark {
+    color-scheme: dark;
+
+    /* ---- Neutrals ---- */
+    --color-surface: #1a1210;
+    --color-surface-muted: #100b0a;
+    --color-border: #3a2925;
+    --color-border-subtle: #4a2420;
+    --color-ink: #f4edeb;
+    --color-ink-muted: #b0a19d;
+
+    /* ---- Vermex tints ---- */
+    --color-brand-50: #331613;
+    --color-brand-100: #4d211c;
+    --color-brand-soft: #331613;
+    --color-brand-soft-border: #4d211c;
+    --color-brand-ink: #ffb4aa;
+
+    /* ---- Accents ---- */
+    --color-link: #ff8a7a;
+    --color-link-hover: #ffb4aa;
+    --color-scrollbar: #5a4742;
+
+    /* ---- Semantic text colours ---- */
+    --color-success: #86efac;
+    --color-warning: #fde68a;
+    --color-danger: #fca5a5;
+
+    /* ---- State surfaces ---- */
+    --color-success-soft: #0d2418;
+    --color-success-soft-border: #1b4a2f;
+    --color-success-ink: #bbf7d0;
+    --color-success-strong: #4ade80;
+
+    --color-danger-soft: #2e1212;
+    --color-danger-soft-border: #55201f;
+    --color-danger-ink: #fecaca;
+    --color-danger-strong: #f87171;
+
+    --color-warning-soft: #2b2208;
+    --color-warning-soft-border: #4a3a0d;
+    --color-warning-ink: #fde68a;
+    --color-warning-strong: #facc15;
+
+    --color-info-soft: #0f1d33;
+    --color-info-soft-border: #1e3a5f;
+    --color-info-ink: #bfdbfe;
+    --color-info-strong: #60a5fa;
+
+    /* ---- Sidebar (kept distinct from the page surface) ---- */
+    --color-sidebar: #22100c;
+    --color-sidebar-hover: #341712;
+    --color-sidebar-active: #3d1a14;
+    --color-sidebar-line: #47231c;
+    --color-sidebar-text: #cbbfbc;
+    --color-sidebar-accent: #ff8a7a;
+    --color-sidebar-brand: #d09a8f;
+
+    /* ---- Elevation ---- */
+    --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.5);
+    --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+/*
+ |--------------------------------------------------------------------------
+ | Force-light scope
+ |--------------------------------------------------------------------------
+ | Used by the standalone print layout and by html2pdf, which must always
+ | capture light colours even when the operator has dark mode enabled.
+ */
+.theme-light {
+    color-scheme: light;
+    color: var(--color-ink);
+    background-color: var(--color-surface);
+
+    --color-surface: #ffffff;
+    --color-surface-muted: #f8f8f8;
+    --color-border: #e5e7eb;
+    --color-border-subtle: #fecaca;
+    --color-ink: #212529;
+    --color-ink-muted: #6c757d;
+
+    --color-brand-50: #fdf2f2;
+    --color-brand-100: #fee2e2;
+    --color-brand-soft: #fdf2f2;
+    --color-brand-soft-border: #fee2e2;
+    --color-brand-ink: #b71c1c;
+
+    --color-link: #d32f2f;
+    --color-link-hover: #b71c1c;
+    --color-scrollbar: #cbd5e1;
+
+    --color-success: #28a745;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+
+    --color-success-soft: #f0fdf4;
+    --color-success-soft-border: #dcfce7;
+    --color-success-ink: #166534;
+    --color-success-strong: #15803d;
+
+    --color-danger-soft: #fef2f2;
+    --color-danger-soft-border: #fee2e2;
+    --color-danger-ink: #991b1b;
+    --color-danger-strong: #b91c1c;
+
+    --color-warning-soft: #fefce8;
+    --color-warning-soft-border: #fef9c3;
+    --color-warning-ink: #854d0e;
+    --color-warning-strong: #a16207;
+
+    --color-info-soft: #eff6ff;
+    --color-info-soft-border: #dbeafe;
+    --color-info-ink: #1e40af;
+    --color-info-strong: #1d4ed8;
+
+    --color-sidebar: #2b110d;
+    --color-sidebar-hover: #3d1712;
+    --color-sidebar-active: #431913;
+    --color-sidebar-line: #4d1f18;
+    --color-sidebar-text: #c5b8b5;
+    --color-sidebar-accent: #ff6b5a;
+    --color-sidebar-brand: #c8887b;
+
+    --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@layer base {
+    [x-cloak] {
+        display: none !important;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        background-color: var(--color-surface-muted);
+    }
+
+    body {
+        margin: 0;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-brand-600);
+        outline-offset: 2px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--color-surface-muted);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-scrollbar);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-brand-600);
+    }
+}
+
+@media print {
+    /*
+     | Reports and PDF captures must always be light, even when the operator
+     | enabled dark mode. Reset the semantic tokens for the print context.
+     */
+    :root,
+    .dark,
+    .theme-light {
+        color-scheme: light;
+
+        --color-surface: #ffffff;
+        --color-surface-muted: #f8f8f8;
+        --color-border: #e5e7eb;
+        --color-border-subtle: #fecaca;
+        --color-ink: #212529;
+        --color-ink-muted: #6c757d;
+
+        --color-brand-50: #fdf2f2;
+        --color-brand-100: #fee2e2;
+        --color-brand-soft: #fdf2f2;
+        --color-brand-soft-border: #fee2e2;
+        --color-brand-ink: #b71c1c;
+
+        --color-link: #d32f2f;
+        --color-link-hover: #b71c1c;
+
+        --color-success: #28a745;
+        --color-warning: #ffc107;
+        --color-danger: #dc3545;
+
+        --color-success-soft: #f0fdf4;
+        --color-success-soft-border: #dcfce7;
+        --color-success-ink: #166534;
+        --color-success-strong: #15803d;
+
+        --color-danger-soft: #fef2f2;
+        --color-danger-soft-border: #fee2e2;
+        --color-danger-ink: #991b1b;
+        --color-danger-strong: #b91c1c;
+
+        --color-warning-soft: #fefce8;
+        --color-warning-soft-border: #fef9c3;
+        --color-warning-ink: #854d0e;
+        --color-warning-strong: #a16207;
+
+        --color-info-soft: #eff6ff;
+        --color-info-soft-border: #dbeafe;
+        --color-info-ink: #1e40af;
+        --color-info-strong: #1d4ed8;
+    }
+
+    .theme-toggle {
+        display: none !important;
+    }
+
+    @page {
+        margin: 12mm;
+    }
+
+    html,
+    body {
+        background: #ffffff !important;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    #printable-report {
+        width: 100% !important;
+    }
+
+    #printable-report .shadow-card,
+    #printable-report .shadow-sm {
+        box-shadow: none !important;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+    }
+}
+
